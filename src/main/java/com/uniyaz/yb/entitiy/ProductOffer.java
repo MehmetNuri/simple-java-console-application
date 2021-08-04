@@ -1,5 +1,7 @@
 package com.uniyaz.yb.entitiy;
 
+import java.util.Comparator;
+
 public class ProductOffer {
 
     private int id;
@@ -63,4 +65,18 @@ public class ProductOffer {
                 ", product=" + product +
                 '}';
     }
+
+
+    public static Comparator<ProductOffer> comparePrice = new Comparator<ProductOffer>() {
+        public int compare(ProductOffer p1, ProductOffer p2)
+        {
+            int price1 = Integer.parseInt(p1.getPrice());
+            int price2 = Integer.parseInt(p2.getPrice());
+
+            return price1 - price2;
+
+
+        }
+    };
+
 }

@@ -5,11 +5,33 @@ import com.uniyaz.yb.entitiy.Product;
 import com.uniyaz.yb.entitiy.ProductOffer;
 import com.uniyaz.yb.util.ConsoleColors;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
 
     public static void main(String[] args) {
+
+        Product product = new Product();
+        product.setName("Elma");
+        ListContainer.productDb.add(product);
+
+        ProductOffer productOffer = new ProductOffer();
+        productOffer.setCompany_name("A Firması");
+        productOffer.setProduct(product);
+        productOffer.setPrice("66");
+        ListContainer.productOfferDb.add(productOffer);
+
+        ProductOffer productOffer2= new ProductOffer();
+        productOffer2.setCompany_name("B Firması");
+        productOffer2.setProduct(product);
+        productOffer2.setPrice("13");
+        ListContainer.productOfferDb.add(productOffer2);
+
+        ProductOffer productOffer3= new ProductOffer();
+        productOffer3.setCompany_name("C Firması");
+        productOffer3.setProduct(product);
+        productOffer3.setPrice("21");
+        ListContainer.productOfferDb.add(productOffer3);
 
         System.out.println(ConsoleColors.CYAN_BOLD + "Teklif Platformuna Hoş Geldiniz\n" + ConsoleColors.RESET);
         Scanner input = new Scanner(System.in);
@@ -61,9 +83,11 @@ public class App {
     }
 
     private static void listProductOffer() {
-        for (ProductOffer productOffer : ListContainer.productOfferDb) {
-            System.out.println(productOffer);
-        }
+
+        Collections.sort(ListContainer.productOfferDb, ProductOffer.comparePrice);
+        System.out.println(ListContainer.productOfferDb.get(0).getPrice());
+
+
     }
 
     private static void addProductOffer(Scanner input) {
@@ -83,7 +107,7 @@ public class App {
 
             if (product.getId() == Integer.parseInt(productId)) {
                 productOffer.setProduct(product);
-                System.out.println(product.getName() +" ürünü için fiyat giriniz: ");
+                System.out.println(product.getName() + " ürünü için fiyat giriniz: ");
                 break;
             }
 
