@@ -1,37 +1,26 @@
 package com.uniyaz.yb;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.uniyaz.yb.entitiy.ListContainer;
 import com.uniyaz.yb.entitiy.Product;
 import com.uniyaz.yb.entitiy.ProductOffer;
 import com.uniyaz.yb.util.ConsoleColors;
+import com.uniyaz.yb.util.ResourceHelper;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.io.*;
+import java.lang.reflect.Type;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class App {
+    private static String fileName = "src/main/resources/data.txt";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Product product = new Product();
-        product.setName("Elma");
-        ListContainer.productDb.add(product);
-
-        ProductOffer productOffer = new ProductOffer();
-        productOffer.setCompany_name("A Firması");
-        productOffer.setProduct(product);
-        productOffer.setPrice("66");
-        ListContainer.productOfferDb.add(productOffer);
-
-        ProductOffer productOffer2= new ProductOffer();
-        productOffer2.setCompany_name("B Firması");
-        productOffer2.setProduct(product);
-        productOffer2.setPrice("13");
-        ListContainer.productOfferDb.add(productOffer2);
-
-        ProductOffer productOffer3= new ProductOffer();
-        productOffer3.setCompany_name("C Firması");
-        productOffer3.setProduct(product);
-        productOffer3.setPrice("21");
-        ListContainer.productOfferDb.add(productOffer3);
 
         System.out.println(ConsoleColors.CYAN_BOLD + "Teklif Platformuna Hoş Geldiniz\n" + ConsoleColors.RESET);
         Scanner input = new Scanner(System.in);
@@ -82,7 +71,7 @@ public class App {
 
     }
 
-    private static void listProductOffer() {
+    private static void listProductOffer() throws IOException {
 
         Collections.sort(ListContainer.productOfferDb, ProductOffer.comparePrice);
         System.out.println(ListContainer.productOfferDb.get(0).getPrice());
@@ -133,6 +122,47 @@ public class App {
         Product product = new Product();
         product.setName(name);
         ListContainer.productDb.add(product);
+
+        App objectIO = new App();
+
+
+        objectIO.WriteObjectToFile(product);
+
+    }
+
+    public void WriteObjectToFile(Object serObj) {
+
+        try {
+
+            FileOutputStream fileOut = new FileOutputStream("src/main/resources/data.txt");
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(serObj);
+            objectOut.close();
+            System.out.println("The Object  was succesfully written to a file");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+        Product e = null;
+        try {
+            FileInputStream fileIn = new FileInputStream("src/main/resources/data.txt");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            e = (Product) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+            return;
+        } catch (ClassNotFoundException c) {
+            System.out.println("Employee class not found");
+            c.printStackTrace();
+        }
+
+        System.out.println(e.getName());
+
+
     }
 
     private static void printMenu() {

@@ -1,8 +1,11 @@
 package com.uniyaz.yb.entitiy;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class ProductOffer {
+public class ProductOffer implements Serializable {
+
+    private static final long serialVersionUID = -628789568975888036L;
 
     private int id;
     private String company_name;
